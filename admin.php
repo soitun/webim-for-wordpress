@@ -7,12 +7,14 @@ function webim_config() {
 		update_option( "webim_apikey", $wpdb->escape( $_POST['apikey'] ) );
 		update_option( "webim_host", $wpdb->escape( $_POST['host'] ) );
 		update_option( "webim_port", $wpdb->escape( $_POST['port'] ) );
+		update_option( "webim_buddies", $wpdb->escape( $_POST['buddies'] ) );
 		$notice = '<div id="message" class="updated fade"><p>设置已保存</p></div>';
 	}
 	$config_domain = get_option( "webim_domain" );
 	$config_apikey = get_option( "webim_apikey" );
 	$config_host = get_option( "webim_host" );
 	$config_port = get_option( "webim_port" );
+	$config_buddies = get_option( "webim_buddies" );
 ?>
 <div class="wrap">
 	<h2>设置</h2>
@@ -32,6 +34,13 @@ function webim_config() {
 				<td>
 				<input name="apikey" type="text" id="apikey"  value="<?php echo $config_apikey;?>" class="regular-text" />
 				<span class="description">域名对应的apikey</span>
+				</td>
+			</tr>
+			<tr valign="top">
+				<th scope="row"><label for="buddies">支持用户</label></th>
+				<td>
+				<input name="buddies" type="text" id="buddies"  value="<?php echo $config_buddies;?>" class="regular-text" />
+				<span class="description">可以登录im的用户名列表, 逗号(,)分割, 如:admin,test 为空时为所有用户</span>
 				</td>
 			</tr>
 			<tr valign="top">

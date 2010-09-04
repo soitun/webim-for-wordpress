@@ -11,7 +11,7 @@ $new_messages = new_message();
 
 $im_buddies = array();//For online.
 $active_buddies = ids_array(gp('buddy_ids'));
-$buddies = webim_get_buddies();
+$buddies = webim_get_buddies( get_option( "webim_buddies" ) );
 $cache_buddies = array();
 foreach( $buddies as $buddy ) {
 	$id = $buddy->id;

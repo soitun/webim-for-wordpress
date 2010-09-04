@@ -10,7 +10,7 @@ else
 
 global $wpdb;
 $table_name = $wpdb->prefix . "webim_histories";
-$webim_db_version = "1.0";
+$webim_db_version = '1.01';
 
 if( $wpdb->get_var( "SHOW TABLES LIKE '$table_name'" ) != $table_name ) {
 	/** Install */
@@ -45,8 +45,19 @@ if( $wpdb->get_var( "SHOW TABLES LIKE '$table_name'" ) != $table_name ) {
 	add_option( "webim_theme", "base" );
 	add_option( "webim_local", "zh-CN" );
 	add_option( "webim_emot", "default" );
+	add_option( "webim_buddies", "" );
 } else {
 	/** Upgrade */
+	add_option( "webim_db_version", $webim_db_version );
+	add_option( "webim_domain", "" );
+	add_option( "webim_apikey", "" );
+	add_option( "webim_host", "webim20.cn" );
+	add_option( "webim_port", "8000" );
+	add_option( "webim_theme", "base" );
+	add_option( "webim_local", "zh-CN" );
+	add_option( "webim_emot", "default" );
+	add_option( "webim_buddies", "" );
+	update_option( "webim_db_version", $webim_db_version );
 }
 
 ?>
