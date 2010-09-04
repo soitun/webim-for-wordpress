@@ -154,7 +154,7 @@ function webim_stylesheet() {
 function webim_footer() {
 	$local = get_option("webim_local");
 	$local = $local ? $local : "zh-CN";
-	echo '<script src="'. webim_url_for( "static/webim.service.js" ) . '" type="text/javascript"></script>';
+	echo '<script src="'. webim_url_for( "static/webim.service.min.js" ) . '" type="text/javascript"></script>';
 	echo '<script src="'. webim_url_for( "static/i18n/webim-{$local}.js" ) . '" type="text/javascript"></script>';
 	echo '<script type="text/javascript">var _webim_ajaxurl = "' . admin_url('admin-ajax.php') . '";var _webim_path = "' . webim_url_for("") . '";</script>';
 	echo '<script src="'. webim_url_for( "custom.js" ) . '" type="text/javascript"></script>';
@@ -164,9 +164,9 @@ if(is_admin()){
 	/** Add admin menu */
 	require_once( dirname( __FILE__ ) . "/admin.php" );
 	function webim_admin_menu() {
-		add_menu_page( "webim", "webim", MANAGEMENT_PERMISSION, __FILE__, "webim_config");
-		add_submenu_page( __FILE__, "webim_config", "webim_config", MANAGEMENT_PERMISSION, __FILE__, "webim_config");
-		add_submenu_page( __FILE__, "webim_themes", "webim_themes", MANAGEMENT_PERMISSION, "webim_themes", "webim_themes");
+		add_menu_page( "webim", "webim", "manage_options", __FILE__, "webim_config");
+		add_submenu_page( __FILE__, "webim_config", "webim_config", "manage_options", __FILE__, "webim_config");
+		add_submenu_page( __FILE__, "webim_themes", "webim_themes", "manage_options", "webim_themes", "webim_themes");
 	}
 }
 
