@@ -35,7 +35,7 @@ if( $wpdb->get_var( "SHOW TABLES LIKE '$table_name'" ) != $table_name ) {
 		KEY `to` (`to`),
 		KEY `from` (`from`),
 		KEY `send` (`send`)
-	);";
+	)  DEFAULT CHARSET=utf8;";
 	dbDelta($sql);
 	add_option( "webim_db_version", $webim_db_version );
 	add_option( "webim_domain", "" );
