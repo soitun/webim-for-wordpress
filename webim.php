@@ -111,6 +111,7 @@ function webim_get_current_user() {
 			"uid" => 0,
 			"id" => $visitor['id'],
 			"nick" => $nick,
+			"visitor" => "true",
 			"pic_url" => webim_get_avatar($commenter['comment_author_email'])
 		);
 	} else {
