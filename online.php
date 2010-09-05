@@ -54,6 +54,10 @@ if($data->success){
 		$b = $cache_buddies[$id];
 		$b->presence = $v->presence;
 		$b->show = $v->show;
+		if ( $v->nick )
+			$b->nick = $v->nick;
+		if ( $v->status )
+			$b->status = $v->status;
 	}
 
 	//Provide history for active buddies and rooms
