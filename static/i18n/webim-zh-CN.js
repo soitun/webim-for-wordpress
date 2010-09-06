@@ -79,7 +79,9 @@ webim.ui.i18n.store('zh-CN',{
 	"away": "\u79bb\u5f00",
 	"invisible": "\u9690\u8eab",
 	"unavailable": "\u79bb\u7ebf",
-	"online support": "\u5728\u7ebf\u652f\u6301"
+	"online support": "\u5728\u7ebf\u652f\u6301",
+	"location": "\u6b63\u5728",
+	"from": "\u6765\u81ea"
 });
 
 webim.ui.i18n.store('zh-CN',{

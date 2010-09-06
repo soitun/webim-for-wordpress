@@ -5,8 +5,8 @@
  * Copyright (c) 2010 Hidden
  * Released under the MIT, BSD, and GPL Licenses.
  *
- * Date: Sat Sep 4 17:30:07 2010 +0800
- * Commit: 2ef0da6151d02c9a39ee39216129016863cb84e3
+ * Date: Mon Sep 6 16:44:08 2010 +0800
+ * Commit: f3dcaa3941041ea76fd8ea68ce307b2df5f147da
  */
 (function(window, document, undefined){
 
@@ -974,6 +974,8 @@ log.disable = function(){
 * 	message
 * 	presence
 * 	status
+*
+* 	sendMsg
 */
 
 
@@ -1086,6 +1088,7 @@ extend(webim.prototype, objectExtend,{
 			var d = {id: a.from, presence: a.type}; 
 			if(a.show)d.show = a.show;
 			if(a.nick)d.nick = a.nick;
+			if(a.status)d.status = a.status;
 			return d;
 		}
 
@@ -1103,6 +1106,7 @@ extend(webim.prototype, objectExtend,{
 	sendMsg: function(msg){
 		var self = this;
 		msg.ticket = self.data.connection.ticket;
+		self.trigger("sendMsg",[msg]);
 		ajax({
 			type: 'post',
 			url: self.options.urls.message,
@@ -1415,7 +1419,11 @@ model("buddy", {
 		var self = this, data = self.dataHash, ids = [], v;
 		for(var key in data){
 			v = data[key];
-			if(v.incomplete && v.presence == 'online')ids.push(key);
+			if(v.incomplete && v.presence == 'online'){
+				//Don't load repeat. 
+				v.incomplete = false;
+				ids.push(key);
+			}
 		}
 		self.load(ids);
 	},
@@ -1773,8 +1781,8 @@ model("history",{
  * Copyright (c) 2010 Hidden
  * Released under the MIT, BSD, and GPL Licenses.
  *
- * Date: Sat Sep 4 17:31:06 2010 +0800
- * Commit: b4a5b11d76e56cb7e4ae48598620f2295d27bcef
+ * Date: Mon Sep 6 16:46:47 2010 +0800
+ * Commit: 41cb188eab5d3a21bbcf3549c4f62ee9ca78034f
  */
 (function(window,document,undefined){
 
@@ -4148,7 +4156,7 @@ widget("buddy",{
 	tpl_li: '<li title=""><a href="<%=url%>" rel="<%=id%>" class="ui-helper-clearfix"><em class="webim-icon webim-icon-<%=show%>" title="<%=human_show%>"><%=show%></em><img width="25" src="<%=pic_url%>" defaultsrc="<%=default_pic_url%>" onerror="var d=this.getAttribute(\'defaultsrc\');if(d && this.src!=d)this.src=d;" /><strong><%=nick%></strong><span><%=status%></span></a></li>'
 },{
 	_init: function(){
-		var self = this;
+		var self = this, options = self.options;
 		self.groups = {
 		};
 		self.li = {
@@ -4156,6 +4164,9 @@ widget("buddy",{
 		self.li_group = {
 		};
 		self.size = 0;
+		if(options.disable_group){
+			addClass(self.element, "webim-buddy-hidegroup");
+		}
 
 	},
 	_initEvents: function(){
@@ -4360,4 +4371,68 @@ self.trigger("offline");
 	destroy: function(){
 	}
 });
+/* 
+* ui.visitorstatus
+*
+* Show visitor's from site and location in status.
+* Auto send from site and location when first message if changed.
+*
+* options:
+*
+* methods:
+* 
+* events: 
+* 
+*/
+
+app("visitorstatus", {
+	init: function(options){
+		var ui = this, im = ui.im, status = im.status;
+		var last_from = status.get("v_f"),
+		last_location = status.get("v_l"),
+		current_from = document.referrer,
+		current_location = document.location.href,
+		location_host = document.location.host;
+		if (current_from && current_from != last_from){
+			ex = /\/\/([^\/]+)/.exec(current_from);
+			var from_host = ex && ex[1];
+			if(from_host && from_host != location_host){
+				//Change from.
+				status.set("v_f", current_from);
+			}else{
+				current_from = last_from;
+			}
+		}else{
+			current_from = last_from;
+		}
+		if (current_location != last_location){
+			status.set("v_l", current_location);
+		}
+
+		ui.visitorstatus = current_location + ( current_from ? (" | " + i18n("from") + " " + current_from) : "");
+		var current_sent = {};
+		im.bind( "sendMsg" , function( msg ){
+			var key = "v_to_" + msg.to;
+			//Send once.
+			if ( !current_sent[key] ){
+				current_sent[key] = true;
+				var body = "", sent = im.status.get(key);
+				if( !sent || current_location != last_location || current_from != last_from ){
+					im.status.set(key, 1);
+					body = i18n("location") + ": " + current_location;
+					if ( current_from && ( !sent || current_from != last_from )){
+						body += " \n " + i18n("from") + ": " + current_from;
+					}
+				}
+				if( body ){
+					im.sendMsg(extend({}, msg, {body: body}));
+				}
+			}
+		});
+	},
+	ready: function( param ) {
+		param.visitorstatus = this.visitorstatus;
+	}
+});
+
 })(window, document);

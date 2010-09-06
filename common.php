@@ -17,6 +17,10 @@ $_IMC = array(
 /** User */
 
 $user = webim_get_current_user();
+if ( isset( $user->visitor ) && gp('visitorstatus') ){
+	$user->status = gp('visitorstatus');
+}
+
 $user->show = gp('show') ? gp('show') : "available";
 
 //Common $ticket
