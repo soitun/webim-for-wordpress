@@ -39,6 +39,7 @@
 		title: webim.ui.i18n("online support"),
 		disable_user: true
 	});
+	ui.addApp("visitorstatus");
 	ui.render();
 	im.autoOnline() && im.online();
 
