@@ -37,7 +37,8 @@
 	}), im = ui.im;
 	ui.addApp("buddy", {
 		title: webim.ui.i18n("online support"),
-		disable_user: true
+		disable_user: true,
+		disable_group: true
 	});
 	ui.addApp("visitorstatus");
 	ui.render();
