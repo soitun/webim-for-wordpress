@@ -13,7 +13,7 @@
 register_activation_hook( __FILE__, 'webim_install' );
 
 /** Display webim in blog page */
-add_action( 'wp_print_styles', 'webim_stylesheet' );
+//add_action( 'wp_print_styles', 'webim_stylesheet' );
 add_action( 'wp_footer', 'webim_footer' );
 
 if(is_admin()){
@@ -21,7 +21,7 @@ if(is_admin()){
 	add_action( 'admin_menu', 'webim_admin_menu' );
 
 	/** Display webim in admin page */
-	add_action( 'admin_print_styles', 'webim_stylesheet' );
+	//add_action( 'admin_print_styles', 'webim_stylesheet' );
 	add_action( 'admin_footer', 'webim_footer' );
 }
 
@@ -155,10 +155,7 @@ function webim_stylesheet() {
 function webim_footer() {
 	$local = get_option("webim_local");
 	$local = $local ? $local : "zh-CN";
-	echo '<script src="'. webim_url_for( "static/webim.service.min.js" ) . '" type="text/javascript"></script>';
-	echo '<script src="'. webim_url_for( "static/i18n/webim-{$local}.js" ) . '" type="text/javascript"></script>';
-	echo '<script type="text/javascript">var _webim_ajaxurl = "' . admin_url('admin-ajax.php') . '";var _webim_path = "' . webim_url_for("") . '";</script>';
-	echo '<script src="'. webim_url_for( "custom.js" ) . '" type="text/javascript"></script>';
+	echo '<script type="text/javascript" src="/webim/admin/custom.js.php"></script>';
 }
 
 if(is_admin()){
