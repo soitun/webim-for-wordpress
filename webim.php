@@ -155,7 +155,7 @@ function webim_stylesheet() {
 function webim_footer() {
 	$local = get_option("webim_local");
 	$local = $local ? $local : "zh-CN";
-	echo '<script type="text/javascript" src="/webim/admin/custom.js.php"></script>';
+	echo '<script type="text/javascript" src="/webim/custom.js.php"></script>';
 }
 
 if(is_admin()){
